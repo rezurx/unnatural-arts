@@ -43,6 +43,7 @@ nav.main a:hover{color:var(--bone)}
 .hero{border-bottom:1px solid var(--line)}
 .hero .banner{display:block;width:100%;height:clamp(140px,24vw,380px);object-fit:cover;object-position:50% 50%;border-bottom:1px solid var(--line)}
 @media (min-width:2000px){.hero .banner{object-fit:contain;background:#07080e}}
+@media (min-width:800px){.hero .banner{height:clamp(150px,13vw,320px);object-fit:cover;object-position:50% 50%}}
 .hero .intro{padding-top:44px;padding-bottom:60px}
 .hero h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .hero p.lede{max-width:52ch;font-size:1.4rem;line-height:1.45;color:var(--bone);margin:0 0 24px}
@@ -153,7 +154,10 @@ footer p{margin:0 0 8px;max-width:70ch}
 
 <main id="top">
   <div class="hero">
-    <img class="banner" src="assets/banner.webp" width="3344" height="1200" alt="The Unnatural Arts. An Ian Moreno Publication. Celebrating the beautifully artificial.">
+    <picture>
+      <source media="(min-width:800px)" srcset="assets/banner-wide.webp" width="2560" height="520">
+      <img class="banner" src="assets/banner.webp" width="3344" height="1200" alt="The Unnatural Arts. An Ian Moreno Publication. Celebrating the beautifully artificial.">
+    </picture>
     <div class="wrap intro">
       <h1>The Unnatural Arts</h1>
       <p class="lede">One family of synthetic acts. A metal band that gloats, a girl-group disaster who is totally fine, a woman at a piano in no hurry, and whatever else wanders in.</p>
