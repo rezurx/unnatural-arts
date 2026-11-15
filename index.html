@@ -80,7 +80,7 @@ section{padding:72px 0;border-bottom:1px solid var(--line);scroll-margin-top:60p
     radial-gradient(120% 90% at 20% 10%,color-mix(in srgb,var(--act) 34%,transparent),transparent 60%),var(--ink-2)}
 .thumb .ph span{font-weight:700;font-size:4.2rem;letter-spacing:-.03em;color:color-mix(in srgb,var(--act) 70%,var(--bone));opacity:.9}
 .num{position:absolute;left:0;top:0;background:var(--ink);color:var(--act);padding:6px 10px;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.soon{position:absolute;right:0;top:0;background:var(--act);color:var(--ink);padding:6px 10px;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+.soon{position:absolute;right:0;bottom:0;top:auto;font-weight:500;background:var(--act);color:var(--ink);padding:6px 10px;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
 .meta{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:var(--dim)}
 .meta .act{color:var(--act)}
 .card h3{font-size:1.55rem;line-height:1.12;margin:6px 0 8px;font-weight:700}
@@ -352,7 +352,7 @@ function card(r){
   const ph = `<div class="ph" aria-hidden="true"><span>${pad(r.n)}</span></div>`;
   const fb = r.youtube && !r.img ? `if(!this.dataset.f){this.dataset.f=1;this.src='https://i.ytimg.com/vi/${encodeURIComponent(r.youtube)}/hqdefault.jpg'}else{this.remove()}` : `this.remove()`;
   const inner = ph + (src ? `<img loading="lazy" alt="" src="${esc(src)}" onerror="${fb}">` : "");
-  const tags = `${r.soon ? `<span class="soon">${esc(r.soon)}</span>` : ""}`;
+  const tags = `${r.soon ? `<span class="soon">Coming soon · ${esc(r.soon)}</span>` : ""}`;
   const thumb = go
     ? `<a class="thumb" href="${go}" target="_blank" rel="noopener" aria-label="${esc(r.title)} on YouTube">${inner}${tags}</a>`
     : `<div class="thumb">${inner}${tags}</div>`;
@@ -360,7 +360,7 @@ function card(r){
     yt ? `<a href="${yt}" target="_blank" rel="noopener">Watch →</a>` : "",
     find ? `<a href="${find}" target="_blank" rel="noopener">Find on YouTube →</a>` : "",
     r.substack ? `<a href="${esc(r.substack)}" target="_blank" rel="noopener">Read the story →</a>` : ""
-  ].join("") || `<span class="none">${r.soon ? "Coming " + esc(r.soon) : "Link coming"}</span>`;
+  ].join("") || `<span class="none">${r.soon ? "Coming soon · " + esc(r.soon) : "Link coming"}</span>`;
   return `<article class="card" data-act="${r.act}" style="--act:${act.color}">
     ${thumb}
     <div class="meta mono"><span><span class="act">${num} · ${esc(act.name)}</span> · ${esc(r.kind)}</span><span>${esc(r.time)}</span></div>
