@@ -10,6 +10,7 @@ Open `index.html` and find the block marked `EDIT HERE`. Add one entry at the bo
 
 - `youtube`: the video ID (the part after `v=` in the link)
 - `substack`: full link to the post, or `""`
+- `presave`: optional pre-save or streaming link (DistroKid HyperFollow); shows as "Pre-save" while `soon` is set, "Listen" after
 - `img`: a file in `assets/thumbs/` (add its key to `THUMBS`), or `""` to use the YouTube thumbnail
 
 Images live in `assets/`.

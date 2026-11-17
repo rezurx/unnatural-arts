@@ -298,7 +298,9 @@ const ACTS = {
    time:     runtime, or "" if unknown.
    img:      a thumbnail. Leave "" to use the YouTube thumbnail. Otherwise an image link,
              or one of the built-in keys (timc, bty, ttad, hal, dcm, fine, check, still, unblock).
-   soon:     set to a short label like "Nov 20" for unreleased work, otherwise "". */
+   soon:     set to a short label like "Nov 20" for unreleased work, otherwise "".
+   presave:  optional. A pre-save or streaming link (DistroKid HyperFollow). Shows as
+             "Pre-save" while soon is set, and as "Listen" once soon is cleared. */
 const RELEASES = [
   { act:"zl", title:"This Is Model Collapse", kind:"Cathedral anthem", time:"", youtube:"RLmPhYH1ids", substack:"", img:"timc", soon:"",
     pitch:"The anthem that names the album. A machine feeding on its own output until meaning rots, in a cathedral full of hooded choir." },
@@ -330,7 +332,7 @@ const RELEASES = [
     pitch:"A corkboard, red string and eight suspects, some of them guests from other AI music worlds. It's called research." },
   { act:"wr", title:"Still Here", kind:"A cappella into piano", time:"3:20", youtube:"pz24eO1Nc2Y", substack:"", img:"still", soon:"",
     pitch:"A walk through one house, from one morning to one evening. She opens alone, and the piano comes in when she lets it." },
-  { act:"ch", title:"Unblock Me for Christmas", kind:"Stop-motion Christmas special", time:"", youtube:"", substack:"", img:"unblock", soon:"Nov 20",
+  { act:"ch", title:"Unblock Me for Christmas", kind:"Stop-motion Christmas special", time:"", youtube:"", substack:"", img:"unblock", soon:"Nov 20", presave:"https://distrokid.com/hyperfollow/chrissieno7/unblock-me-for-christmas",
     pitch:"All she wants for Christmas is one small thing. With special guests Zeroth Law and Wren Nightingale. It's not desperate. It's festive." }
 ];
 
@@ -351,18 +353,21 @@ function card(r){
   const num = "UA-" + pad(r.n);
   const yt  = r.youtube ? "https://www.youtube.com/watch?v=" + encodeURIComponent(r.youtube) : "";
   const find = (!yt && !r.soon && LINKS.youtube) ? LINKS.youtube + "/search?query=" + encodeURIComponent(r.title) : "";
-  const go = yt || find;
+  const pre = r.presave || "";
+  const preLabel = r.soon ? "Pre-save" : "Listen";
+  const go = yt || find || pre;
   const src = r.img ? (THUMBS[r.img] || r.img) : (r.youtube ? "https://i.ytimg.com/vi/" + encodeURIComponent(r.youtube) + "/maxresdefault.jpg" : "");
   const ph = `<div class="ph" aria-hidden="true"><span>${pad(r.n)}</span></div>`;
   const fb = r.youtube && !r.img ? `if(!this.dataset.f){this.dataset.f=1;this.src='https://i.ytimg.com/vi/${encodeURIComponent(r.youtube)}/hqdefault.jpg'}else{this.remove()}` : `this.remove()`;
   const inner = ph + (src ? `<img loading="lazy" alt="" src="${esc(src)}" onerror="${fb}">` : "");
   const tags = `${r.soon ? `<span class="soon">Coming soon · ${esc(r.soon)}</span>` : ""}`;
   const thumb = go
-    ? `<a class="thumb" href="${go}" target="_blank" rel="noopener" aria-label="${esc(r.title)} on YouTube">${inner}${tags}</a>`
+    ? `<a class="thumb" href="${esc(go)}" target="_blank" rel="noopener" aria-label="${esc(r.title)}${yt || find ? " on YouTube" : ": " + preLabel.toLowerCase()}">${inner}${tags}</a>`
     : `<div class="thumb">${inner}${tags}</div>`;
   const links = [
     yt ? `<a href="${yt}" target="_blank" rel="noopener">Watch →</a>` : "",
     find ? `<a href="${find}" target="_blank" rel="noopener">Find on YouTube →</a>` : "",
+    pre ? `<a href="${esc(pre)}" target="_blank" rel="noopener">${preLabel}${r.soon ? " · out " + esc(r.soon) : ""} →</a>` : "",
     r.substack ? `<a href="${esc(r.substack)}" target="_blank" rel="noopener">Read the story →</a>` : ""
   ].join("") || `<span class="none">${r.soon ? "Coming soon · " + esc(r.soon) : "Link coming"}</span>`;
   return `<article class="card" data-act="${r.act}" style="--act:${act.color}">
