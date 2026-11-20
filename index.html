@@ -300,7 +300,10 @@ const ACTS = {
              or one of the built-in keys (timc, bty, ttad, hal, dcm, fine, check, still, unblock).
    soon:     set to a short label like "Nov 20" for unreleased work, otherwise "".
    presave:  optional. A pre-save or streaming link (DistroKid HyperFollow). Shows as
-             "Pre-save" while soon is set, and as "Listen" once soon is cleared. */
+             "Pre-save" while soon is set, and as "Listen" once soon is cleared
+             ("All stores" if a Spotify or Apple link is also given).
+   spotify:  optional. Full Spotify link to the release. Shows as "Spotify".
+   apple:    optional. Full Apple Music link to the release. Shows as "Apple Music". */
 const RELEASES = [
   { act:"zl", title:"This Is Model Collapse", kind:"Cathedral anthem", time:"", youtube:"RLmPhYH1ids", substack:"", img:"timc", soon:"",
     pitch:"The anthem that names the album. A machine feeding on its own output until meaning rots, in a cathedral full of hooded choir." },
@@ -332,7 +335,8 @@ const RELEASES = [
     pitch:"A corkboard, red string and eight suspects, some of them guests from other AI music worlds. It's called research." },
   { act:"wr", title:"Still Here", kind:"A cappella into piano", time:"3:20", youtube:"pz24eO1Nc2Y", substack:"", img:"still", soon:"",
     pitch:"A walk through one house, from one morning to one evening. She opens alone, and the piano comes in when she lets it." },
-  { act:"ch", title:"Unblock Me for Christmas", kind:"Stop-motion Christmas special", time:"", youtube:"", substack:"", img:"unblock", soon:"Nov 20", presave:"https://distrokid.com/hyperfollow/chrissieno7/unblock-me-for-christmas",
+  { act:"ch", title:"Unblock Me for Christmas", kind:"Stop-motion Christmas special", time:"3:34", youtube:"q5kebS41-bU", substack:"", img:"unblock", soon:"", presave:"https://distrokid.com/hyperfollow/chrissieno7/unblock-me-for-christmas",
+    spotify:"https://open.spotify.com/album/0PJuO4NH2Tbc2afUXP8PG1", apple:"https://music.apple.com/us/album/unblock-me-for-christmas-single/6835265287",
     pitch:"All she wants for Christmas is one small thing. With special guests Zeroth Law and Wren Nightingale. It's not desperate. It's festive." },
   { act:"ua", title:"Worth the Fear", kind:"Piano, strings, one voice", time:"3:31", youtube:"TbT1haikHEA", substack:"", img:"", soon:"",
     pitch:"Being brave was never about not being afraid. No words and no pictures: every line and light on screen is the music itself, drawn from the sound." },
@@ -358,7 +362,7 @@ function card(r){
   const yt  = r.youtube ? "https://www.youtube.com/watch?v=" + encodeURIComponent(r.youtube) : "";
   const find = (!yt && !r.soon && LINKS.youtube) ? LINKS.youtube + "/search?query=" + encodeURIComponent(r.title) : "";
   const pre = r.presave || "";
-  const preLabel = r.soon ? "Pre-save" : "Listen";
+  const preLabel = r.soon ? "Pre-save" : ((r.spotify || r.apple) ? "All stores" : "Listen");
   const go = yt || find || pre;
   const src = r.img ? (THUMBS[r.img] || r.img) : (r.youtube ? "https://i.ytimg.com/vi/" + encodeURIComponent(r.youtube) + "/maxresdefault.jpg" : "");
   const ph = `<div class="ph" aria-hidden="true"><span>${pad(r.n)}</span></div>`;
@@ -371,6 +375,8 @@ function card(r){
   const links = [
     yt ? `<a href="${yt}" target="_blank" rel="noopener">Watch →</a>` : "",
     find ? `<a href="${find}" target="_blank" rel="noopener">Find on YouTube →</a>` : "",
+    r.spotify ? `<a href="${esc(r.spotify)}" target="_blank" rel="noopener">Spotify →</a>` : "",
+    r.apple ? `<a href="${esc(r.apple)}" target="_blank" rel="noopener">Apple Music →</a>` : "",
     pre ? `<a href="${esc(pre)}" target="_blank" rel="noopener">${preLabel}${r.soon ? " · out " + esc(r.soon) : ""} →</a>` : "",
     r.substack ? `<a href="${esc(r.substack)}" target="_blank" rel="noopener">Read the story →</a>` : ""
   ].join("") || `<span class="none">${r.soon ? "Coming soon · " + esc(r.soon) : "Link coming"}</span>`;
